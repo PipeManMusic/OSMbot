@@ -95,6 +95,7 @@ class OsmBot(SingleServerIRCBot):
             c.privmsg( channel,  "In your dreams, that only for testing.....")
         elif note.lower() == "latest":
             c.privmsg(channel,  feed.entries[0].title)
+            c.privmsg(channel, feed.entries[0].link)
         else:
             self.note_parser(note, c)
 
