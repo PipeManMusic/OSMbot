@@ -25,7 +25,9 @@ import time
 from midiutil.MidiFile import MIDIFile
 from datetime import datetime
 import feedparser
+import eliza
 
+therapist = eliza.eliza()
 feed = feedparser.parse('http://opensourcemusician.libsyn.com/rss')
 
 ntime = time.time()
@@ -68,13 +70,19 @@ class OsmBot(SingleServerIRCBot):
         self.channel = channel
     def on_pubmsg (self, c, e):
         input = str(e.arguments()[0])
-        if input[:1]== "!":
+        if input[:1] == "!" and input[:2]!= "!!":
             note = input[1:]
             self.command_parser(note, c)
+        elif input[:2]=="!!":
+            question = input[1:]
+	    self.eliza_parser(question, c)
         else:
             pass
     def on_welcome(self, c, e):
         c.join(self.channel)
+
+    def eliza_parser(self, question, c):
+        c.privmsg( channel, therapist.respond(question))
 
     def command_parser(self, note, c):
         if note.lower() == "help":
