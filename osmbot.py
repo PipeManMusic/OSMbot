@@ -24,11 +24,7 @@ from ircbot import SingleServerIRCBot
 import time
 from midiutil.MidiFile import MIDIFile
 from datetime import datetime
-import feedparser
-import eliza
 
-therapist = eliza.eliza()
-feed = feedparser.parse('http://opensourcemusician.libsyn.com/rss')
 
 ntime = time.time()
 MidiDict = {}
@@ -53,7 +49,7 @@ osmMidi.addTempo(track, postime, 110)
 server = "irc.freenode.net"
 port = 6667
 channel = '#opensourcemusicians'
-nickname = 'DansBot'
+nickname = 'rlameiroBot'
 
 #---Importer from file
 t = open('midilist', 'r')
@@ -70,50 +66,46 @@ class OsmBot(SingleServerIRCBot):
         self.channel = channel
     def on_pubmsg (self, c, e):
         input = str(e.arguments()[0])
-        if input[:1] == "!" and input[:2]!= "!!":
+        name = str(e.source().split ( '!' ) [ 0 ])
+        if input[:1]== "!":
             note = input[1:]
-            self.command_parser(note, c)
-        elif input[:2]=="!!":
-            question = input[1:]
-	    self.eliza_parser(question, c)
+            self.command_parser(note, c, name)
         else:
             pass
     def on_welcome(self, c, e):
         c.join(self.channel)
 
-    def eliza_parser(self, question, c):
-        c.privmsg( channel, therapist.respond(question))
-
-    def command_parser(self, note, c):
+    def command_parser(self, note, c, name):
         if note.lower() == "help":
-            print "help command"
+            c.privmsg( channel, name + ": !Note+index eg. !bb3, !help, !usage, !about, !r - makes a rest, !quit - quits the bot")
         elif note.lower() == "usage":
-            c.privmsg( channel, '''Usage: to start a command use the '!' char and a note representation in the format like "!C#3" or "!bb2" or !f3. The note index range from C0 to C8. The rest is represented by "!r" ''')
+            c.privmsg( channel, name + ''': Usage: to start a command use the '!' char and a note representation in the format like "!C#3" or "!bb2" or !f3. The note index range from C0 to C8. The rest is represented by "!r" ''')
         elif note.lower() == "midi":
             print "midi command"
             midiWriteFile()
         elif note.lower() == "about":
-            c.privmsg( channel, "The main goal of the bot music game, is to record note entry and rests over time, in a colaborative way, and then export it as a midi file. ")
+            c.privmsg( channel, name + ": The main goal of the bot music game, is to record note entry and rests over time, in a colaborative way, and then export it as a midi file. ")
         elif note.lower() == "license":
-            print "license command"
+            c.privmsg(channel, name + ": This Bot is GPL. Code available at http://github.com/PipeManMusic/OSMbot")
         elif note.lower() == "r":
-            c.privmsg(channel, "rest received")
+            c.privmsg(channel, name + ": rest received")
             self.midinewrest(c)
         elif note.lower() == "quit":
-            c.privmsg( channel,  "In your dreams, that only for testing.....")
-        elif note.lower() == "latest":
-            c.privmsg(channel,  feed.entries[0].title)
-            c.privmsg(channel, feed.entries[0].link)
+            c.privmsg( channel, name + " :In your dreams, that's only for testing.....")
+        elif note.lower() == "nick":
+            c.privmsg( channel, name + "TEST")
+        elif note.lower() == "python":
+            c.privmsg( channel, name + " :Python is great!!! I am working in it!!!")
         else:
-            self.note_parser(note, c)
+            self.note_parser(note, c, name)
 
-    def note_parser(self, note, c):
+    def note_parser(self, note, c, name):
         try:
             mnote = int(MidiDict[note.lower()])
             self.midinewnote(mnote, c)
-            c.privmsg(channel, "note received")
+            c.privmsg(channel, name + " :note received")
         except KeyError:
-            c.privmsg( channel,  "Do you really know what you are doing???")
+            c.privmsg( channel, name + " :Do you really know what you are doing???")
             
     def midinewnote(self, mnote, c):
         #'writes a midi note and the duration. argument is the midi note number'
@@ -134,7 +126,6 @@ class OsmBot(SingleServerIRCBot):
         velocity = 0
         mrest = 0
         osmMidi.addNote(track1, channel, mrest, nextbeat, time1, velocity)
-
 
 
 
