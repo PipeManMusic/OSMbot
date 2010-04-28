@@ -24,7 +24,9 @@ from ircbot import SingleServerIRCBot
 import time
 from midiutil.MidiFile import MIDIFile
 from datetime import datetime
+import feedparser
 
+feed = feedparser.parse('http://opensourcemusician.libsyn.com/rss')
 
 ntime = time.time()
 MidiDict = {}
@@ -49,7 +51,7 @@ osmMidi.addTempo(track, postime, 110)
 server = "irc.freenode.net"
 port = 6667
 channel = '#opensourcemusicians'
-nickname = 'OSMBot'
+nickname = 'DansBot'
 
 #---Importer from file
 t = open('midilist', 'r')
@@ -91,6 +93,8 @@ class OsmBot(SingleServerIRCBot):
             self.midinewrest(c)
         elif note.lower() == "quit":
             c.privmsg( channel,  "In your dreams, that only for testing.....")
+        elif note.lower() == "latest":
+            c.privmsg(channel,  feed.entries[0].title)
         else:
             self.note_parser(note, c)
 
