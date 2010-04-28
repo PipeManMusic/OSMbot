@@ -24,7 +24,11 @@ from ircbot import SingleServerIRCBot
 import time
 from midiutil.MidiFile import MIDIFile
 from datetime import datetime
+import feedparser
+import eliza
 
+therapist = eliza.eliza()
+feed = feedparser.parse('http://opensourcemusician.libsyn.com/rss')
 
 ntime = time.time()
 MidiDict = {}
@@ -49,7 +53,7 @@ osmMidi.addTempo(track, postime, 110)
 server = "irc.freenode.net"
 port = 6667
 channel = '#opensourcemusicians'
-nickname = 'rlameiroBot'
+nickname = 'OSMBot'
 
 #---Importer from file
 t = open('midilist', 'r')
@@ -67,13 +71,19 @@ class OsmBot(SingleServerIRCBot):
     def on_pubmsg (self, c, e):
         input = str(e.arguments()[0])
         name = str(e.source().split ( '!' ) [ 0 ])
-        if input[:1]== "!":
+        if input[:1] == "!" and input[:2]!= "!!":
             note = input[1:]
             self.command_parser(note, c, name)
+        elif input[:2]=="!!":
+            question = input[2:]
+	    self.eliza_parser(question, c)
         else:
             pass
     def on_welcome(self, c, e):
         c.join(self.channel)
+
+    def eliza_parser(self, question, c):
+        c.privmsg(channel, therapist.respond(question))
 
     def command_parser(self, note, c, name):
         if note.lower() == "help":
@@ -96,6 +106,9 @@ class OsmBot(SingleServerIRCBot):
             c.privmsg( channel, name + "TEST")
         elif note.lower() == "python":
             c.privmsg( channel, name + " :Python is great!!! I am working in it!!!")
+        elif note.lower() == "latest":
+            c.privmsg(channel,  feed.entries[0].title)
+            c.privmsg(channel, feed.entries[0].link)
         else:
             self.note_parser(note, c, name)
 
