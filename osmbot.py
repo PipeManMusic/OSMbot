@@ -1,4 +1,24 @@
 #!/usr/bin/env python
+##    OSMBot - A IRC BOT for the #opensourcemusicians@freenode.net channel
+##    Copyright (C) 2001  Ricardo Lameiro and help of [LSD] and others to come
+##
+##    This program is free software: you can redistribute it and/or modify
+##    it under the terms of the GNU General Public License as published by
+##    the Free Software Foundation, either version 3 of the License, or
+##    (at your option) any later version.
+##
+##    This program is distributed in the hope that it will be useful,
+##    but WITHOUT ANY WARRANTY; without even the implied warranty of
+##    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+##    GNU General Public License for more details.
+##
+##    You should have received a copy of the GNU General Public License
+##    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+# Code is available at http://github.com/PipeManMusic/OSMbot.git
+# More info will be added to the Open Source Musicians Podcast WIKI
+#
+#
+
 import string
 from ircbot import SingleServerIRCBot
 import time
@@ -11,9 +31,9 @@ MidiDict = {}
 
 #--- Midi file setup
 osmMidi = MIDIFile(1)
+
 #naming the file with the date and hour
-today = str(datetime.now())
-filename = today.translate(None, "-: .") + ".mid"
+filename = datetime.now().strftime("%Y%m%d%H%M%S") + ".mid"
 
 
 track = 0
@@ -121,15 +141,7 @@ def noteTime():
     nextbeat = nextbeat1 + Rtime
     return Rtime
 
-#-----
-#while 1:
+
 bot = OsmBot(channel, nickname, server, port)
 bot.start()
-    
-    
-#def main():
 
-##while 1:
-##    handlePubMessage()
-#if __name__ == "__main__":
-#    main()

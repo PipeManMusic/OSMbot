@@ -1,0 +1,14 @@
+OSMBot - The #opensourcemusicians@freenode.net BOT
+
+
+This file needs to be updated
+
+
+In order to Run, OSMBot needs:
+
+Python >= 2.5
+PyIRCLib  ----> http://pyirclib.sourceforge.net/
+MIDIUtil >= 0.87 (included) ----> http://code.google.com/p/midiutil/
+
+ 
+ 
