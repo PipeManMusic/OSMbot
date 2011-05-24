@@ -45,8 +45,15 @@ class OsmBot(SingleServerIRCBot):
         c.nick(c.get_nickname() + "_") 
     def on_pubmsg (self, c, e):
         a = e.arguments()[0].split(":", 1)
+        statement = irc_lower(a[0].strip())
+
+        if statement == "help":
+            self.eliza_parser('help', c)
+
         if len(a) > 1 and irc_lower(a[0]) == irc_lower(self.connection.get_nickname()):
+
             question = irc_lower(a[1].strip())
+
             if question == "latest episode":
                 self.getLatestEpisode(c)
             elif question[:11] == 'get episode':
