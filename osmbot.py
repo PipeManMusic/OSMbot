@@ -27,6 +27,7 @@ import eliza
 from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import sessionmaker
 #import question
+import re
 
 therapist = eliza.eliza()
 #feed = feedparser.parse('http://opensourcemusician.libsyn.com/rss')
@@ -48,6 +49,8 @@ class OsmBot(SingleServerIRCBot):
             question = irc_lower(a[1].strip())
             if question == "latest episode":
                 self.getLatestEpisode(c)
+            elif question[:11] == 'get episode':
+                self.getEpisode(question, c)
             else:
                 self.eliza_parser(question, c)
     def on_welcome(self, c, e):
@@ -59,6 +62,14 @@ class OsmBot(SingleServerIRCBot):
     def getLatestEpisode(self, c):
         feed = feedparser.parse("http://opensourcemusician.libsyn.com/rss")
         c.privmsg(channel, feed['items'][0]['links'][1]['href'])
+
+    def getEpisode(self, question, c):
+        feed = feedparser.parse("http://opensourcemusician.libsyn.com/rss")
+        for item in feed['items']:
+            search = question[11:]+'(?![0-9])'
+            if re.search(search, item['title']):
+                c.privmsg(channel, item['title'])
+                c.privmsg(channel, item['links'][1]['href'])
 
 bot = OsmBot(channel, nickname, server, port)
 bot.start()

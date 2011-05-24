@@ -5,6 +5,8 @@
 #  with some updates by Jeff Epler <jepler@inetnebr.com>
 #  hacked into a module and updated by Jez Higgins <jez@jezuk.co.uk>
 #  last revised: 28 February 2005
+#  
+#  This document was forked and modified by Daniel Worth in 2011
 #----------------------------------------------------------------------
 
 import string
@@ -83,7 +85,7 @@ gReflections = {
 #----------------------------------------------------------------------
 gPats = [
   [r'Help',
-  [ "I'm the OSMP therapist. I'm only here to help. You can ask me any question you like."]],
+  [ "I'm the OSMP therapist. I'm only here to help. You can ask me any question you like. You can type 'latest episode' to get the link to the latest episode of OSMP"]],
 
   [r'What is OSMP?',
   ["OSMP is a podcast hosted by PipeManMusic, holstein, _guitarman_ and [lsd]."]],
