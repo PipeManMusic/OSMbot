@@ -1,14 +1,11 @@
 OSMBot - The #opensourcemusicians@freenode.net BOT
 
-
-This file needs to be updated
+This bot was created by Daniel Worth for the #opensourcemusicians channel on irc.freenode.net. It combines a port of Eliza and a SimpleIRCBot to create a chatterbot that also serves some functial purposes.
 
 
 In order to Run, OSMBot needs:
-
 Python >= 2.5
 PyIRCLib  ----> http://pyirclib.sourceforge.net/
-MIDIUtil >= 0.87 (included) ----> http://code.google.com/p/midiutil/
-
+feedparser ----> http://feedparser.org
  
  
