@@ -1,6 +1,7 @@
 import aiml
 from ircbot import SingleServerIRCBot
 from irclib import irc_lower
+from libosmbot import *
 
 kernel = aiml.Kernel()
 
@@ -27,13 +28,11 @@ class OsmBot(SingleServerIRCBot):
             responce = kernel.respond(question)
             if responce[0] == "_":
                 func = responce[1:]
-                print locals().keys()
-                print func
                 
-                if not hasattr(self, func):
-                    c.privmsg(channel, "Command not found")
+                if func in globals().keys() and callable(globals()[func]):
+                    c.privmsg(channel, globals()[ func]())
                 else:
-                    c.privmsg(channel,  getattr(self, func)()) 
+                    c.privmsg(channel, "I don't know that command")
             else:
                 c.privmsg(channel, responce)
     def testCommand(self):

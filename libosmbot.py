@@ -1,2 +1,2 @@
-def command():
-   print "Here is my command!"
+def testCommand():
+    return "Here is my command!"
