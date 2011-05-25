@@ -5,7 +5,7 @@
     </category>
     <category>
         <pattern>COMMAND</pattern>
-        <template>_command</template>
+        <template>_testCommand</template>
     </category>
     <category>
         <pattern>*</pattern>
