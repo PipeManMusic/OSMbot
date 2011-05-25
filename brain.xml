@@ -1,0 +1,15 @@
+<aiml>
+    <category>
+        <pattern>HELLO</pattern>
+        <template>Hi! How are you?</template>
+    </category>
+    <category>
+        <pattern>COMMAND</pattern>
+        <template>_command</template>
+    </category>
+    <category>
+        <pattern>*</pattern>
+        <template>I don't know WTF you are talking about!</template>
+    </category>
+
+</aiml>
